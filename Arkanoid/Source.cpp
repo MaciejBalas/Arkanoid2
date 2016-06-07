@@ -10,6 +10,54 @@ const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 800;
 const float FPS = 60;
 
+class Ball
+{
+	int r = 10;
+public:
+	int x, y;
+	int vector[2];
+
+	Ball()
+	{
+		x = 492;
+		y = 600;
+		vector[0] = 1;	//MOVEMENT VECTOR WITH VALUES BETWEEN -1 AND 1
+		vector[1] = -1;
+	}
+
+	void Draw()
+	{
+		al_draw_filled_circle(x, y, r, al_map_rgb(255, 255, 255));
+	}
+
+	void Move()
+	{
+		
+		if (x <= 10)	//LEFT BORDER OF SCREEN
+		{
+			vector[0] = 1;
+		}
+
+		if (x >= 1014)	//RIGHT SCREEN BORDER
+		{
+			vector[0] = -1;
+		}
+
+		if (y <= 10)	//BOTTOM OF SCREEN
+		{
+			vector[1] = 1;
+		}
+
+		if (y >= 790)	//TOP OF SCREEN
+		{
+			vector[1] = -1;
+		}
+		
+		x = x + vector[0];
+		y = y + vector[1];
+	}
+};
+
 class Map
 {
 	int Map_arr[6][10];
@@ -83,6 +131,7 @@ int main()
 	float x;
 	x = 442;
 	Map map;
+	Ball ball;
 
 	init();
 	ALLEGRO_DISPLAY *Screen=nullptr;
@@ -140,6 +189,9 @@ int main()
 		}
 		
 		map.Draw();
+		ball.Move();
+		ball.Draw();
+		
 
 		al_flip_display();
 		al_rest(0.016);	//REST NEEDED TO ENSURE ~60 FPS RENDERING
